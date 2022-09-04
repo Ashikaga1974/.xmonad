@@ -4,6 +4,6 @@
 # amixer get Master | egrep -o "[0-9]+%"
 vol=$(amixer get Master | awk -F'[]%[]' '/%/ {if ($7 == "off") { print "MM" } else { print $2 }}' | head -n 1)
 
-echo Vol: $vol%
+echo $vol%
 
 exit 0
