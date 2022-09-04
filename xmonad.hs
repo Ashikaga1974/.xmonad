@@ -102,7 +102,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     
     [ 
         ((modm .|. shiftMask      ,               xK_Return),             spawn $ XMonad.terminal conf),                                   -- launch a terminal
-        ((modm                    ,               xK_p     ),             spawn "rofi -show drun -show-icons -font 'Source Code Pro 10'"), -- launch rofi
+        ((modm                    ,               xK_p     ),             spawn "rofi -show drun -show-icons -font 'Source Code Pro 12'"), -- launch rofi
         ((modm                    ,               xK_o     ),             spawn "rofi -show window -show-icons -font 'Source Code Pro 10'"), -- launch rofi        
         ((modm                    ,               xK_c     ),             kill),                                                           -- close focused window
         ((modm                    ,               xK_space ),             sendMessage NextLayout),                                         -- Rotate through the available layout algorithms
