@@ -1,11 +1,7 @@
 #!/bin/bash
+# Get number of available updates
+max=$(yum check-update | awk 'p;/^$/{p=1}' | grep -c "\.")
 
-checkupdatesshort(){
-    #echo "huhu"
-    max = yum check-update | awk 'p;/^$/{p=1}' | grep -c "\."
-    echo max
-}
+echo $max
 
-checkupdatesshort
-
-#echo yum check-update | awk 'p;/^$/{p=1}' | grep -c "\."
+exit 0
