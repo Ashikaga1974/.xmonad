@@ -194,9 +194,11 @@ myManageHook = composeAll
     , className =? "Code"               --> doShift "3:CODE"              
     , className =? "alacritty"          --> doShift "1:TERM"     
     , className =? "Alacritty"          --> doShift "1:TERM"   
-    , className =? "thunderbird"         --> doShift "4:MISC"      
+    , className =? "thunderbird"        --> doShift "4:MISC"      
     , className =? "Mail"               --> doShift "4:MISC"              
     , className =? "gnome-calculator"   --> doFloat
+    , className =? "gimp-2.10"          --> doFloat    
+    , className =? "Gimp-2.10"          --> doFloat        
     , resource =? "desktop_window"      --> doIgnore
     , resource =? "kdesktop"            --> doIgnore
 
@@ -209,24 +211,22 @@ myStartupHook = do
 
     setDefaultCursor xC_left_ptr                                          -- Default Mauszeiger (import xmonad.util.mouse)
 
-    spawn "killall gkrellm"                                               -- falls GKrellM läuft Instanz beenden
-
     spawnOnce "xrandr --auto --output DisplayPort-0 --right-of DVI-D-0 &" -- Monitorausgabe
-    spawnOnce "nitrogen --restore &"                                      -- Wallpaper wiederherstellen
+    spawnOnce "nitrogen --restore &"                                      -- Wallpaper wiederherstellen (install)
 
     spawnOnce "picom &"                                                   -- Transzparenz (install)
     spawnOnce "thunderbird &"                                             -- install
-    --spawnOnce "numlockx &"                                                -- install
+    spawnOnce "numlockx &"                                                -- install
     
     --spawn "/usr/bin/emacs --daemon"
-    --spawn ("sleep 2 && trayer --edge top --align right --widthtype request --width 10 --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint black --height 19")   
+    spawn ("sleep 2 && trayer --edge top --align right --widthtype request --width 10 --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint black --height 19")   
 
 ------------------------------------------------------------------------
 -- Start xmonad
 ------------------------------------------------------------------------
 main = do
-    xmproc0 <- spawnPipe "xmobar -x 1 ~/.xmobar/xmobarrc"
-    xmproc1 <- spawnPipe "xmobar -x 2 ~/.xmobar/xmobarrc1"    
+    xmproc0 <- spawnPipe "xmobar -x 1 ~/.xmonad/xmobar/xmobarrc"
+    xmproc1 <- spawnPipe "xmobar -x 2 ~/.xmonad/xmobar/xmobarrc1"    
 
     xmonad $ docks $ ewmh $ defaults xmproc0 xmproc1
 
@@ -254,7 +254,7 @@ defaults xmproc0 xmproc1 = def
                                                                 ppOutput            = \x -> hPutStrLn xmproc0 x 
                                                                                         >> hPutStrLn xmproc1 x,
                                                                 ppTitle             = xmobarColor xmobarTitleColor "" . shorten 100,
-                                                                ppCurrent           = xmobarColor xmobarCurrentWorkspaceColor "" .wrap "[" "]",
+                                                                ppCurrent           = xmobarColor xmobarTitleColor "" .wrap "[" "]",
                                                                 ppHidden            = xmobarColor xmobarCurrentWorkspaceColor "" .wrap "*" "" . clickable,
                                                                 ppHiddenNoWindows   = xmobarColor xmobarHiddenNoWindows "" . clickable,
                                                                 ppVisible           = xmobarColor xmobarVisible "" . clickable,
@@ -315,3 +315,6 @@ help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "mod-button1  Set the window to floating mode and move by dragging",
     "mod-button2  Raise the window to the top of the stack",
     "mod-button3  Set the window to floating mode and resize by dragging"]
+
+
+--org.gnome.desktop.default-applications.terminal exec 'gnome-terminal'

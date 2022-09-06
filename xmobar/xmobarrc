@@ -1,0 +1,53 @@
+Config { font = "xft:Source Code Pro:pixelsize=14:bold:antialias=true:"
+       , additionalFonts = ["xft:FontAwesome:pixelsize=14"]
+       , borderColor = "black"
+       , border = TopB
+       , bgColor = "black"
+       , fgColor = "grey"
+       , alpha = 255
+       , position = Top
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = True
+       , hideOnStart = False
+       , iconRoot = "/home/saschalerschen/.xmonad/xpm/" --default: "."
+       , allDesktops = True
+       , overrideRedirect = True
+       , commands = [ 
+                     Run Com "echo" ["<fn=1>\xf003</fn>"] "mail" 3600
+
+                     -- define some Font-Awesome "Icons"
+                     , Run Com "echo" ["<fn=1>\xf120</fn>"] "terminal" 3600   
+                     , Run Com "echo" ["<fn=1>\xf268</fn>"] "Browser" 3600                        
+                     , Run Com "echo" ["<fn=1>\xf121</fn>"] "Code" 3600                        
+                     , Run Com "echo" ["<fn=1>\xf05a</fn>"] "Info" 3600                        
+                     , Run Com "echo" ["<fn=1>\xf017</fn>"] "Clock" 3600                        
+                     , Run Com "echo" ["<fn=1>\xf080</fn>"] "Mem" 3600    
+                     , Run Com "echo" ["<fn=1>\xf2db</fn>"] "Chip" 3600                                                                  
+                     , Run Com "echo" ["<fn=1>\xf2c7</fn>"] "Temp" 3600                                                                                       
+                     , Run Com "echo" ["<fn=1>\xf028</fn>"] "Vol" 3600        
+                     , Run Com "echo" ["<fn=1>\xf011</fn>"] "Suspend" 3600                             
+
+                     -- define some plugins
+                     , Run Cpu ["-t", "<total>%","-L","3","-H","50",
+                               "--normal","green","--high","red"] 10
+                     , Run MultiCoreTemp ["-t", "<avg>°C | <avgpc>%",
+                                          "-L", "60", "-H", "80",
+                                          "-l", "green", "-n", "yellow", "-h", "red",
+                                          "--", "--mintemp", "20", "--maxtemp", "100"] 50                                               
+                     , Run Memory ["-t","<usedratio>%"] 10
+                     , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10                     
+
+                     -- define some scripts
+                     , Run Com "/home/saschalerschen/.xmonad/Scripts/checkupdatesshort.sh" [] "up" 3600                  
+                     , Run Com "/home/saschalerschen/.xmonad/Scripts/volume.sh" [] "vol" 10                     
+                     , Run StdinReader
+                     , Run UnsafeStdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "<icon=/home/saschalerschen/.xmonad/xpm/fedora20.xbm/> | <action='thunderbird'>%mail%</action> | <action='alacritty'>%terminal%</action> | <action='firefox'>%Browser%</action> | <action='code'>%Code%</action> | %UnsafeStdinReader%}{%Chip% %cpu% | %Temp% %multicoretemp% | %Mem% %memory% | %Vol% %vol% | %Info% <fc=#D54E53>%up%</fc> | %Clock% <fc=#81A9DB>%date%</fc> <action='/home/saschalerschen/.xmonad/Scripts/suspend.sh'><fc=#D54E53>%Suspend%</fc></action>"
+       }
+
