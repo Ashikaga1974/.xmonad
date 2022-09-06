@@ -131,7 +131,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
         -- Applications
         --((modm                    ,               xK_d      ),            spawn "emacs"),                                                  -- Doom Emacs
-        ((modm                    ,               xK_b      ),            spawn "firefox")                                                   -- Brave
+        ((modm                    ,               xK_b      ),            spawn "firefox"),                                                  -- Firefox
+        ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png")                                                   -- Firefox
     ]
     ++
 
