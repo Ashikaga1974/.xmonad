@@ -29,6 +29,7 @@ Config { font = "xft:Source Code Pro:pixelsize=14:bold:antialias=true:"
                      , Run Com "echo" ["<fn=1>\xf2c7</fn>"] "Temp" 3600                                                                                       
                      , Run Com "echo" ["<fn=1>\xf028</fn>"] "Vol" 3600        
                      , Run Com "echo" ["<fn=1>\xf011</fn>"] "Suspend" 3600                             
+                     , Run Com "echo" ["<fn=1>\xf07b</fn>"] "Folder" 3600    
 
                      -- define some plugins
                      , Run Cpu ["-t", "<total>%","-L","3","-H","50",
@@ -48,6 +49,6 @@ Config { font = "xft:Source Code Pro:pixelsize=14:bold:antialias=true:"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<icon=/home/saschalerschen/.xmonad/xpm/fedora20.xbm/> | <action='thunderbird'>%mail%</action> | <action='alacritty'>%terminal%</action> | <action='firefox'>%Browser%</action> | <action='code'>%Code%</action> | %UnsafeStdinReader%}{%Chip% %cpu% | %Temp% %multicoretemp% | %Mem% %memory% | %Vol% %vol% | %Info% <fc=#D54E53>%up%</fc> | %Clock% <fc=#81A9DB>%date%</fc> <action='/home/saschalerschen/.xmonad/Scripts/suspend.sh'><fc=#D54E53>%Suspend%</fc></action>"
+       , template = "<icon=/home/saschalerschen/.xmonad/xpm/fedora15.xbm/> | <action='nautilus'>%Folder%</action> | <action='thunderbird'>%mail%</action> | <action='alacritty'>%terminal%</action> | <action='firefox'>%Browser%</action> | <action='code'>%Code%</action> | %UnsafeStdinReader%}{%Chip% %cpu% | %Temp% %multicoretemp% | %Mem% %memory% | %Vol% %vol% | %Info% <fc=#D54E53>%up%</fc> | %Clock% <fc=#81A9DB>%date%</fc> <action='/home/saschalerschen/.xmonad/Scripts/suspend.sh'><fc=#D54E53>%Suspend%</fc></action>"
        }
 

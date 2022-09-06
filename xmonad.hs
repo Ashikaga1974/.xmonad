@@ -171,9 +171,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- Layouts:
 ------------------------------------------------------------------------
 --myLayout = showWName' myShowWNameTheme $ smartBorders $ avoidStruts (tiled ||| Mirror tiled ||| Full ||| Grid) 
-myLayout = avoidStruts (magnifier ||| tiled ||| Mirror tiled ||| Full ||| Grid) 
+myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full ||| Grid)
     where
-        magnifier   = (Tall 1 (3/100) (1/2))
         tiled       = spacing 4 $ Tall nmaster delta ratio                  -- default tiling algorithm partitions the screen into two panes
         nmaster     = 1                                                     -- The default number of windows in the master pane
         ratio       = 1/2                                                   -- Default proportion of screen occupied by master pane
