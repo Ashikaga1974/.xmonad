@@ -31,6 +31,8 @@ import XMonad.Layout.Magnifier
 import XMonad.Layout.ToggleLayouts
 import XMonad.Layout.Spacing
 import XMonad.Layout.Grid
+import XMonad.Layout.Named
+import XMonad.Layout.Renamed
 
 import XMonad.Layout.ShowWName
 
@@ -40,40 +42,39 @@ import XMonad.Util.Cursor
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
+import Control.Monad (liftM2)
 
 import Graphics.X11.ExtraTypes.XF86
 
 -- Importiert Library aus /lib/Colors
 import Colors.Col
 
+myLayoutPrinter :: String -> String
+myLayoutPrinter "M" = "<icon=/home/saschalerschen/.xmonad/xpm/mirrorspacingtall.xbm/>"
+myLayoutPrinter "T" = "<icon=/home/saschalerschen/.xmonad/xpm/spacingtall.xbm/>"
+myLayoutPrinter "F" = "<icon=/home/saschalerschen/.xmonad/xpm/full.xbm/>"
+myLayoutPrinter "#" = "<icon=/home/saschalerschen/.xmonad/xpm/grid.xbm/>"
+myLayoutPrinter x = x
+
 myTerminal :: String
 myTerminal                          = "alacritty"
 
 myFont :: String
-myFont = "xft:Source Code Pro:bold:size=10:antialias=true:hinting=true"
+myFont                              = "xft:Source Code Pro:bold:size=10:antialias=true:hinting=true"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse                 = True
 
 windowCount :: X (Maybe String)
-windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
+windowCount                         = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
 myClickJustFocuses :: Bool
 myClickJustFocuses                  = False
 myBorderWidth                       = 2
 myModMask                           = mod1Mask
 
---myShowWNameTheme :: SWNConfig
---myShowWNameTheme                    = def
---                                        { 
---                                            swn_font              = "xft:Source Code Pro:bold:size=60",
---                                            swn_fade              = 1.0,
---                                           swn_bgcolor           = myNormalBorderColor,
---                                            swn_color             = myFocusedBorderColor
---                                        }
-
 myWorkspaces :: [String]
-myWorkspaces                        = ["1:TERM", "2:WEB", "3:CODE", "4:MISC"]
+myWorkspaces                        = ["1:TERM", "2:WEB", "3:CODE", "4:MISC", "5:GFX"]
 
 myWorkspaceIndices                  = M.fromList $ zip myWorkspaces [1..]
 clickable ws                        = "<action=xdotool key alt+" ++ show i ++ ">" ++ ws ++ "</action>"
@@ -160,19 +161,17 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
     [
         ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster)),      -- mod-button1, Set the window to floating mode and move by dragging
-        ((modm, button2), (\w -> focus w >> windows W.shiftMaster)),    -- mod-button2, Raise the window to the top of the stack
+                                       >> windows W.shiftMaster)),                                   -- mod-button1, Set the window to floating mode and move by dragging
         ((modm, button3), (\w -> focus w >> mouseResizeWindow w
-                                       >> windows W.shiftMaster)),      -- mod-button3, Set the window to floating mode and resize by dragging
-        ((modm, button4), (\w -> kill)),                                -- Applikation schliessen
-        ((modm, button5), (\w -> spawn "rofi -show drun -show-icons -font 'Source Code Pro 10'"))   -- geöffnete Programme anzeigen                                            
+                                       >> windows W.shiftMaster)),                                   -- mod-button3, Set the window to floating mode and resize by dragging
+        ((modm, button4), (\w -> kill)),                                                             -- Applikation schliessen
+        ((modm, button5), (\w -> spawn "rofi -show drun -show-icons -font 'Source Code Pro 10'"))    -- geöffnete Programme anzeigen                                            
     ]
 
 ------------------------------------------------------------------------
 -- Layouts:
 ------------------------------------------------------------------------
---myLayout = showWName' myShowWNameTheme $ smartBorders $ avoidStruts (tiled ||| Mirror tiled ||| Full ||| Grid) 
-myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full ||| Grid)
+myLayout = avoidStruts (renamed [Replace "T"] (tiled) ||| renamed [Replace "M"] (Mirror tiled) ||| renamed [Replace "F"] (Full) ||| renamed [Replace "#"] (Grid))
     where
         tiled       = spacing 4 $ Tall nmaster delta ratio                  -- default tiling algorithm partitions the screen into two panes
         nmaster     = 1                                                     -- The default number of windows in the master pane
@@ -185,24 +184,22 @@ myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full ||| Grid)
 -- > xprop | grep WM_CLASS
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"            --> doFloat
-    , className =? "Gimp"               --> doFloat
-    , className =? "Steam"              --> doFloat    
-    , className =? "GKrellm"            --> doFloat      
-    , className =? "gkrellm"            --> doFloat          
-    , className =? "firefox"            --> doShift "2:WEB"          
-    , className =? "Code"               --> doShift "3:CODE"              
-    , className =? "alacritty"          --> doShift "1:TERM"     
-    , className =? "Alacritty"          --> doShift "1:TERM"   
-    , className =? "thunderbird"        --> doShift "4:MISC"      
-    , className =? "Mail"               --> doShift "4:MISC"              
-    , className =? "gnome-calculator"   --> doFloat
-    , className =? "gimp-2.10"          --> doFloat    
-    , className =? "Gimp-2.10"          --> doFloat        
-    , resource =? "desktop_window"      --> doIgnore
-    , resource =? "kdesktop"            --> doIgnore
-
-    , manageDocks ]
+    [ 
+        className =? "MPlayer"              --> doFloat
+        , className =? "Steam"              --> doFloat    
+        , className =? "firefox"            --> viewShift   "2:WEB"          
+        , className =? "Code"               --> viewShift   "3:CODE"              
+        , className =? "alacritty"          --> viewShift   "1:TERM"     
+        , className =? "Alacritty"          --> viewShift   "1:TERM"   
+        , className =? "thunderbird"        --> doShift     "4:MISC"      
+        , className =? "Mail"               --> doShift     "4:MISC"              
+        , className =? "gnome-calculator"   --> doFloat 
+        , className =? "Gimp-2.10"          --> viewShift   "5:GFX"       
+        , resource =? "desktop_window"      --> doIgnore
+        , resource =? "kdesktop"            --> doIgnore
+        , isDialog                          --> doCenterFloat
+        , manageDocks
+    ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -259,7 +256,8 @@ defaults xmproc0 xmproc1 = def
                                                                 ppHiddenNoWindows   = xmobarColor xmobarHiddenNoWindows "" . clickable,
                                                                 ppVisible           = xmobarColor xmobarVisible "" . clickable,
                                                                 ppExtras            = [windowCount],
-                                                                ppSep               = " | "
+                                                                ppSep               = " | ",
+                                                                ppLayout            = myLayoutPrinter
                                                             }
                             }    
 
@@ -315,6 +313,3 @@ help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "mod-button1  Set the window to floating mode and move by dragging",
     "mod-button2  Raise the window to the top of the stack",
     "mod-button3  Set the window to floating mode and resize by dragging"]
-
-
---org.gnome.desktop.default-applications.terminal exec 'gnome-terminal'
