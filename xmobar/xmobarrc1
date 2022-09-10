@@ -1,5 +1,5 @@
 Config { font = "xft:Source Code Pro:pixelsize=14:bold:antialias=true:"
-       , additionalFonts = []
+       , additionalFonts = ["xft:FontAwesome:pixelsize=14"]
        , borderColor = "black"
        , border = TopB
        , bgColor = "black"
@@ -15,7 +15,8 @@ Config { font = "xft:Source Code Pro:pixelsize=14:bold:antialias=true:"
        , iconRoot = "."
        , allDesktops = True
        , overrideRedirect = True
-       , commands = [ Run UnsafeStdinReader
+       , commands = [ 
+                     Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
