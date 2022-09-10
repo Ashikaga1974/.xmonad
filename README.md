@@ -54,83 +54,67 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
 <br/>
 <br/>
-### Built With
+
+<!-- Build with -->
+## Build with
 
 * [![Haskell][Haskell.js]][Haskell-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
+<br/>
+<br/>
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
+This is my actual xmonad config i use on my fedora 36 (workstation). Have fun to search the code :)
+<br/>
+<br/>
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
+Yout need to install the following packages
+* xmonad
+* xmobar
+* alacritty
+* rofi
+* trayer
+* visual studio code (not from the software-center)
+* gimp
+* thunderbird
+<br/>
+<br/>
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Get xmonad and xmobar and other software
+   ```sh
+   sudo dnf install xmonad xmobar alacritty rofi gimp thunderbird
+   ```
 2. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/Ashikaga1974/.xmonad.git
    ```
-3. Install NPM packages
+3. Make the sh.files executeable
    ```sh
-   npm install
+   sample
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
+<br/>
+<br/>
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
+This project is licensed under the GNU General Public License v3.0
+<br/>
+<br/>
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+Ashikaga1974 - no contact available at this moment
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -146,7 +130,7 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: https://github.com/Ashikaga1974/.xmonad/blob/master/Pics/screen2.png
 [Haskell.js]: https://www.haskell.org/img/haskell-logo.svg
 [Haskell-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
