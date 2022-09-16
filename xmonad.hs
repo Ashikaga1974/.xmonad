@@ -218,6 +218,8 @@ myStartupHook = do
     --spawn "/usr/bin/emacs --daemon"
     spawn ("sleep 2 && trayer --edge top --align right --widthtype request --width 10 --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint black --height 19")   
 
+    spawnOnce "flameshot &"                                               -- install        
+
 ------------------------------------------------------------------------
 -- Start xmonad
 ------------------------------------------------------------------------
