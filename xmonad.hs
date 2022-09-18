@@ -17,6 +17,7 @@ import System.Exit
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.SpawnOn
 import XMonad.Actions.GridSelect
+import XMonad.Actions.WindowBringer
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -72,6 +73,7 @@ myClickJustFocuses :: Bool
 myClickJustFocuses                  = False
 myBorderWidth                       = 2
 myModMask                           = mod1Mask
+altMask                             = mod4Mask
 
 myWorkspaces :: [String]
 myWorkspaces                        = ["1:TERM", "2:WEB", "3:CODE", "4:MISC", "5:GFX"]
@@ -128,11 +130,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         ((0                       ,               0x1008FF11   ),         spawn "amixer -q set Master 5%-"),                               -- Controls the amixer (volume) 0 is used for directly accessing the keys
         ((0                       ,               0x1008FF13   ),         spawn "amixer -q set Master 5%+"),
         ((0                       ,               xF86XK_AudioMute ),     spawn "amixer set Master toggle"),
-        ((modm                    ,               xK_g),                  goToSelected $ myGSconfig myColorizer),
-
+        ((altMask                 ,               xK_Tab),                goToSelected $ myGSconfig myColorizer),                          -- Open Windows
         -- Applications
         --((modm                    ,               xK_d      ),            spawn "emacs"),                                                  -- Doom Emacs
-        ((modm                    ,               xK_b      ),            spawn "firefox"),                                                  -- Firefox
+        --((modm                    ,               xK_b      ),            spawn "firefox"),                                                -- Firefox
+        ((modm                    ,               xK_b      ),            spawn "opera"),                                                  -- Opera
         ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png")                                                   -- Firefox
     ]
     ++
@@ -187,7 +189,8 @@ myManageHook = composeAll
     [ 
         className =? "MPlayer"              --> doFloat
         , className =? "Steam"              --> doFloat    
-        , className =? "firefox"            --> viewShift   "2:WEB"          
+        , className =? "firefox"            --> viewShift   "2:WEB"   
+        , className =? "Opera"              --> viewShift   "2:WEB"                  
         , className =? "Code"               --> viewShift   "3:CODE"              
         , className =? "alacritty"          --> viewShift   "1:TERM"     
         , className =? "Alacritty"          --> viewShift   "1:TERM"   
