@@ -84,19 +84,20 @@ clickable ws                        = "<action=xdotool key alt+" ++ show i ++ ">
                                                 i = fromJust $ M.lookup ws myWorkspaceIndices
 
 myGSconfig colorizer                = (buildDefaultGSConfig myColorizer) 
+
                                                                             { 
                                                                                 gs_cellheight = 40,
-                                                                                gs_cellwidth = 300, 
+                                                                                gs_cellwidth = 400, 
                                                                                 gs_font = myFont,
                                                                                 gs_cellpadding = 4
                                                                             }
 
 myColorizer                         = colorRangeFromClassName
-                                        (0x70, 0xFF, 0x70)          -- Grün         -- lowest inactive bg
-                                        (0x70, 0xFF, 0x70)          -- Grün         -- highest inactive bg
-                                        (0x00, 0x00, 0x00)          -- Schwarz      -- active bg
-                                        (0x00, 0x00, 0x00)          -- Schwarz      -- inactive fg
-                                        (0xFF, 0x00, 0x00)          -- rot          -- active fg
+                                        (0x00, 0x00, 0x00)          -- Grün         -- lowest inactive bg
+                                        (0x00, 0x00, 0x00)          -- Grün         -- highest inactive bg
+                                        (0x52, 0x92, 0xC7)          -- blue         -- active bg
+                                        (0x70, 0xFF, 0x70)          -- Schwarz      -- inactive fg
+                                        (0x70, 0xFF, 0x70)          -- rot          -- active fg
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
