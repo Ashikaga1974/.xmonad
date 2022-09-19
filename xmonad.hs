@@ -135,7 +135,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         -- Applications
         --((modm                    ,               xK_d      ),            spawn "emacs"),                                                  -- Doom Emacs
         --((modm                    ,               xK_b      ),            spawn "firefox"),                                                -- Firefox
-        ((modm                    ,               xK_b      ),            spawn "opera"),                                                  -- Opera
+        ((modm                    ,               xK_b      ),            spawn "brave-browser"),                                                  -- Opera
         ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png")                                                   -- Firefox
     ]
     ++
@@ -192,6 +192,7 @@ myManageHook = composeAll
         , className =? "Steam"              --> doFloat    
         , className =? "firefox"            --> viewShift   "2:WEB"   
         , className =? "Opera"              --> viewShift   "2:WEB"                  
+        , className =? "brave-browser"      --> viewShift   "2:WEB"           
         , className =? "Code"               --> viewShift   "3:CODE"              
         , className =? "alacritty"          --> viewShift   "1:TERM"     
         , className =? "Alacritty"          --> viewShift   "1:TERM"   

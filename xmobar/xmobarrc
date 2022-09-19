@@ -49,6 +49,6 @@ Config { font = "xft:Source Code Pro:pixelsize=14:bold:antialias=true:"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<icon=/home/saschalerschen/.xmonad/xpm/fedora15.xbm/> | <action='nautilus'>%Folder%</action> | <action='thunderbird'>%mail%</action> | <action='alacritty'>%terminal%</action> | <action='firefox'>%Browser%</action> | <action='code'>%Code%</action> | %UnsafeStdinReader%}{%Chip% %cpu% | %Temp% %multicoretemp% | %Mem% %memory% | %Vol% %vol% | %Info% <fc=#D54E53>%up%</fc> | %Clock% <fc=#81A9DB>%date%</fc> <action='/home/saschalerschen/.xmonad/Scripts/suspend.sh'><fc=#D54E53>%Suspend%</fc></action>"
+       , template = "<icon=/home/saschalerschen/.xmonad/xpm/fedora15.xbm/> | <action='nautilus'>%Folder%</action> | <action='thunderbird'>%mail%</action> | <action='alacritty'>%terminal%</action> | <action='brave-browser'>%Browser%</action> | <action='code'>%Code%</action> | %UnsafeStdinReader%}{%Chip% %cpu% | %Temp% %multicoretemp% | %Mem% %memory% | %Vol% %vol% | %Info% <fc=#D54E53>%up%</fc> | %Clock% <fc=#81A9DB>%date%</fc> <action='/home/saschalerschen/.xmonad/Scripts/suspend.sh'><fc=#D54E53>%Suspend%</fc></action>"
        }
 
