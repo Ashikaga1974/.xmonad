@@ -40,6 +40,7 @@ import XMonad.Layout.ShowWName
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 import XMonad.Util.Cursor
+import XMonad.Util.NamedScratchpad
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -99,6 +100,19 @@ myColorizer                         = colorRangeFromClassName
                                         (0x70, 0xFF, 0x70)          -- Schwarz      -- inactive fg
                                         (0x70, 0xFF, 0x70)          -- rot          -- active fg
 
+myScratchPads :: [NamedScratchpad]
+myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
+                ]
+  where
+    spawnTerm  = myTerminal ++ " -t scratchpad"
+    findTerm   = title =? "scratchpad"
+    manageTerm = customFloating $ W.RationalRect l t w h
+               where
+                 h = 0.9
+                 w = 0.9
+                 t = 0.95 -h
+                 l = 0.95 -w
+
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 ------------------------------------------------------------------------
@@ -132,11 +146,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         ((0                       ,               0x1008FF13   ),         spawn "amixer -q set Master 5%+"),
         ((0                       ,               xF86XK_AudioMute ),     spawn "amixer set Master toggle"),
         ((altMask                 ,               xK_Tab),                goToSelected $ myGSconfig myColorizer),                          -- Open Windows
+
         -- Applications
         --((modm                    ,               xK_d      ),            spawn "emacs"),                                                  -- Doom Emacs
         --((modm                    ,               xK_b      ),            spawn "firefox"),                                                -- Firefox
-        ((modm                    ,               xK_b      ),            spawn "brave-browser"),                                                  -- Opera
-        ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png")                                                   -- Firefox
+        ((modm                    ,               xK_b      ),            spawn "brave-browser"),                                            -- Brave
+        ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png"),                                                   -- Firefox
+
+        -- Scratchpads
+        ((modm                    ,               xK_t      ),            namedScratchpadAction myScratchPads "terminal")                                                   -- Firefox        
     ]
     ++
 
@@ -190,22 +208,22 @@ myManageHook = composeAll
     [ 
         className =? "MPlayer"              --> doFloat
         , className =? "Steam"              --> doFloat    
-        , className =? "firefox"            --> viewShift   "2:WEB"   
+{-         , className =? "firefox"            --> viewShift   "2:WEB"   
         , className =? "Opera"              --> viewShift   "2:WEB"                  
         , className =? "brave-browser"      --> viewShift   "2:WEB"    
         , className =? "Brave-browser"      --> viewShift   "2:WEB"                  
         , className =? "Code"               --> viewShift   "3:CODE"              
         , className =? "alacritty"          --> viewShift   "1:TERM"     
-        , className =? "Alacritty"          --> viewShift   "1:TERM"   
+        , className =? "Alacritty"          --> viewShift   "1:TERM"    -}
         , className =? "thunderbird"        --> doShift     "4:MISC"      
         , className =? "Mail"               --> doShift     "4:MISC"              
         , className =? "gnome-calculator"   --> doFloat 
-        , className =? "Gimp-2.10"          --> viewShift   "5:GFX"       
+        --, className =? "Gimp-2.10"          --> viewShift   "5:GFX"       
         , resource =? "desktop_window"      --> doIgnore
         , resource =? "kdesktop"            --> doIgnore
         , isDialog                          --> doCenterFloat
         , manageDocks
-    ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
+    ] <+> namedScratchpadManageHook myScratchPads --where viewShift = doF . liftM2 (.) W.greedyView W.shift <+> namedScratchpadManageHook myScratchPads
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -268,6 +286,8 @@ defaults xmproc0 xmproc1 = def
                                                                 ppLayout            = myLayoutPrinter
                                                             }
                             }    
+
+
 
 ------------------------------------------------------------------------
 -- Hilfetext
