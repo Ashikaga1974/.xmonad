@@ -102,7 +102,7 @@ myColorizer                         = colorRangeFromClassName
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm,
-                  NS "thunderbird" spawnTerm findTerm manageTerm
+                  NS "thunderbird" spawnThunder findThunder manageThunder
                 ]
   where
     spawnTerm  = myTerminal ++ " -t scratchpad"
@@ -113,14 +113,14 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm,
                  w = 0.9
                  t = 0.95 -h
                  l = 0.95 -w
-    -- spawnTerm  = myTerminal ++ " -t scratchpad"
-    -- findTerm   = title =? "scratchpad"
-    -- manageTerm = customFloating $ W.RationalRect l t w h
-    --            where
-    --              h = 0.9
-    --              w = 0.9
-    --              t = 0.95 -h
-    --              l = 0.95 -w
+    spawnThunder  = "thunderbird"
+    findThunder   = className =? "thunderbird"
+    manageThunder = customFloating $ W.RationalRect l t w h
+               where
+                 h = 0.9
+                 w = 0.9
+                 t = 0.95 -h
+                 l = 0.95 -w
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -163,7 +163,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png"),                                                   -- Firefox
 
         -- Scratchpads
-        ((modm                    ,               xK_t      ),            namedScratchpadAction myScratchPads "terminal")                                                   -- Firefox        
+        ((modm                    ,               xK_t      ),            namedScratchpadAction myScratchPads "terminal"),
+        ((modm                    ,               xK_z      ),            namedScratchpadAction myScratchPads "thunderbird")
     ]
     ++
 
