@@ -101,7 +101,8 @@ myColorizer                         = colorRangeFromClassName
                                         (0x70, 0xFF, 0x70)          -- rot          -- active fg
 
 myScratchPads :: [NamedScratchpad]
-myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
+myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm,
+                  NS "thunderbird" spawnTerm findTerm manageTerm
                 ]
   where
     spawnTerm  = myTerminal ++ " -t scratchpad"
@@ -112,6 +113,14 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                  w = 0.9
                  t = 0.95 -h
                  l = 0.95 -w
+    -- spawnTerm  = myTerminal ++ " -t scratchpad"
+    -- findTerm   = title =? "scratchpad"
+    -- manageTerm = customFloating $ W.RationalRect l t w h
+    --            where
+    --              h = 0.9
+    --              w = 0.9
+    --              t = 0.95 -h
+    --              l = 0.95 -w
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -208,22 +217,22 @@ myManageHook = composeAll
     [ 
         className =? "MPlayer"              --> doFloat
         , className =? "Steam"              --> doFloat    
-{-         , className =? "firefox"            --> viewShift   "2:WEB"   
+        , className =? "firefox"            --> viewShift   "2:WEB"   
         , className =? "Opera"              --> viewShift   "2:WEB"                  
         , className =? "brave-browser"      --> viewShift   "2:WEB"    
         , className =? "Brave-browser"      --> viewShift   "2:WEB"                  
         , className =? "Code"               --> viewShift   "3:CODE"              
         , className =? "alacritty"          --> viewShift   "1:TERM"     
-        , className =? "Alacritty"          --> viewShift   "1:TERM"    -}
+        , className =? "Alacritty"          --> viewShift   "1:TERM"
         , className =? "thunderbird"        --> doShift     "4:MISC"      
         , className =? "Mail"               --> doShift     "4:MISC"              
         , className =? "gnome-calculator"   --> doFloat 
-        --, className =? "Gimp-2.10"          --> viewShift   "5:GFX"       
+        , className =? "Gimp-2.10"          --> viewShift   "5:GFX"       
         , resource =? "desktop_window"      --> doIgnore
         , resource =? "kdesktop"            --> doIgnore
         , isDialog                          --> doCenterFloat
         , manageDocks
-    ] <+> namedScratchpadManageHook myScratchPads --where viewShift = doF . liftM2 (.) W.greedyView W.shift <+> namedScratchpadManageHook myScratchPads
+    ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -239,7 +248,7 @@ myStartupHook = do
     spawnOnce "thunderbird &"                                             -- install
     spawnOnce "numlockx &"                                                -- install
     spawnOnce "blueman-applet &"                                          -- install
-    --spawn "/usr/bin/emacs --daemon"
+
     spawn ("sleep 2 && trayer --edge top --align right --widthtype request --width 10 --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint black --height 19")   
 
     spawnOnce "flameshot &"                                               -- install        
@@ -271,7 +280,7 @@ defaults xmproc0 xmproc1 = def
 
                                 layoutHook            = myLayout,    
                                 startupHook           = myStartupHook,
-                                manageHook            = myManageHook    ,
+                                manageHook            = myManageHook <+> namedScratchpadManageHook myScratchPads,
                                 logHook               = dynamicLogWithPP $ xmobarPP
                                                             {
                                                                 ppOutput            = \x -> hPutStrLn xmproc0 x 
