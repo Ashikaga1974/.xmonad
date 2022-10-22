@@ -192,7 +192,8 @@ myManageHook = composeAll
         , className =? "Steam"              --> doFloat    
         , className =? "firefox"            --> viewShift   "2:WEB"   
         , className =? "Opera"              --> viewShift   "2:WEB"                  
-        , className =? "brave-browser"      --> viewShift   "2:WEB"           
+        , className =? "brave-browser"      --> viewShift   "2:WEB"    
+        , className =? "Brave-browser"      --> viewShift   "2:WEB"                  
         , className =? "Code"               --> viewShift   "3:CODE"              
         , className =? "alacritty"          --> viewShift   "1:TERM"     
         , className =? "Alacritty"          --> viewShift   "1:TERM"   
@@ -219,7 +220,7 @@ myStartupHook = do
     spawnOnce "picom &"                                                   -- Transzparenz (install)
     spawnOnce "thunderbird &"                                             -- install
     spawnOnce "numlockx &"                                                -- install
-    
+    spawnOnce "blueman-applet &"                                          -- install
     --spawn "/usr/bin/emacs --daemon"
     spawn ("sleep 2 && trayer --edge top --align right --widthtype request --width 10 --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint black --height 19")   
 
