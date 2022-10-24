@@ -102,7 +102,8 @@ myColorizer                         = colorRangeFromClassName
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm,
-                  NS "thunderbird" spawnThunder findThunder manageThunder
+                  NS "thunderbird" spawnThunder findThunder manageThunder,
+                  NS "firefox" spawnBrave findBrave manageBrave                  
                 ]
   where
     spawnTerm  = myTerminal ++ " -t scratchpad"
@@ -116,6 +117,14 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm,
     spawnThunder  = "thunderbird"
     findThunder   = className =? "thunderbird"
     manageThunder = customFloating $ W.RationalRect l t w h
+               where
+                 h = 0.9
+                 w = 0.9
+                 t = 0.95 -h
+                 l = 0.95 -w
+    spawnBrave  = "firefox -private"
+    findBrave   = className =? "firefox"
+    manageBrave = customFloating $ W.RationalRect l t w h
                where
                  h = 0.9
                  w = 0.9
@@ -164,7 +173,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
         -- Scratchpads
         ((modm                    ,               xK_t      ),            namedScratchpadAction myScratchPads "terminal"),
-        ((modm                    ,               xK_z      ),            namedScratchpadAction myScratchPads "thunderbird")
+        ((modm                    ,               xK_z      ),            namedScratchpadAction myScratchPads "thunderbird"),
+        ((modm                    ,               xK_f      ),            namedScratchpadAction myScratchPads "firefox")
     ]
     ++
 
@@ -216,23 +226,24 @@ myLayout = avoidStruts (renamed [Replace "T"] (tiled) ||| renamed [Replace "M"] 
 --
 myManageHook = composeAll
     [ 
-        className =? "MPlayer"              --> doFloat
-        , className =? "Steam"              --> doFloat    
-        , className =? "firefox"            --> viewShift   "2:WEB"   
-        , className =? "Opera"              --> viewShift   "2:WEB"                  
-        , className =? "brave-browser"      --> viewShift   "2:WEB"    
-        , className =? "Brave-browser"      --> viewShift   "2:WEB"                  
-        , className =? "Code"               --> viewShift   "3:CODE"              
-        , className =? "alacritty"          --> viewShift   "1:TERM"     
-        , className =? "Alacritty"          --> viewShift   "1:TERM"
-        , className =? "thunderbird"        --> doShift     "4:MISC"      
-        , className =? "Mail"               --> doShift     "4:MISC"              
-        , className =? "gnome-calculator"   --> doFloat 
-        , className =? "Gimp-2.10"          --> viewShift   "5:GFX"       
-        , resource =? "desktop_window"      --> doIgnore
-        , resource =? "kdesktop"            --> doIgnore
-        , isDialog                          --> doCenterFloat
-        , manageDocks
+        className =? "MPlayer"              --> doFloat,
+        className =? "Steam"                --> doFloat,
+        className =? "firefox"              --> viewShift,   "2:WEB"
+        className =? "Opera"                --> viewShift,   "2:WEB"
+        className =? "brave-browser"        --> viewShift,   "2:WEB"
+        className =? "Brave-browser"        --> viewShift,   "2:WEB"
+        className =? "firefox"              --> viewShift,   "2:WEB"
+        className =? "Code"                 --> viewShift,   "3:CODE"
+        className =? "alacritty"            --> viewShift,   "1:TERM"
+        className =? "Alacritty"            --> viewShift,   "1:TERM"
+        className =? "thunderbird"          --> doShift,     "4:MISC"
+        className =? "Mail"                 --> doShift,     "4:MISC"
+        className =? "gnome-calculator"     --> doFloat,
+        className =? "Gimp-2.10"            --> viewShift,   "5:GFX"
+        resource  =? "desktop_window"       --> doIgnore,
+        resource  =? "kdesktop"             --> doIgnore,
+        isDialog                            --> doCenterFloat,
+        manageDocks
     ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
 ------------------------------------------------------------------------
@@ -241,25 +252,20 @@ myManageHook = composeAll
 myStartupHook = do
 
     setDefaultCursor xC_left_ptr                                          -- Default Mauszeiger (import xmonad.util.mouse)
-
     spawnOnce "xrandr --auto --output DisplayPort-0 --right-of DVI-D-0 &" -- Monitorausgabe
     spawnOnce "nitrogen --restore &"                                      -- Wallpaper wiederherstellen (install)
-
     spawnOnce "picom &"                                                   -- Transzparenz (install)
-    spawnOnce "thunderbird &"                                             -- install
     spawnOnce "numlockx &"                                                -- install
     spawnOnce "blueman-applet &"                                          -- install
-
     spawn ("sleep 2 && trayer --edge top --align right --widthtype request --width 10 --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint black --height 19")   
-
-    spawnOnce "flameshot &"                                               -- install        
+    spawnOnce "flameshot &"                                               -- install
 
 ------------------------------------------------------------------------
 -- Start xmonad
 ------------------------------------------------------------------------
 main = do
     xmproc0 <- spawnPipe "xmobar -x 1 ~/.xmonad/xmobar/xmobarrc"
-    xmproc1 <- spawnPipe "xmobar -x 2 ~/.xmonad/xmobar/xmobarrc1"    
+    xmproc1 <- spawnPipe "xmobar -x 2 ~/.xmonad/xmobar/xmobarrc1"
 
     xmonad $ docks $ ewmh $ defaults xmproc0 xmproc1
 
@@ -279,7 +285,7 @@ defaults xmproc0 xmproc1 = def
                                 keys                  = myKeys,
                                 mouseBindings         = myMouseBindings,
 
-                                layoutHook            = myLayout,    
+                                layoutHook            = myLayout,
                                 startupHook           = myStartupHook,
                                 manageHook            = myManageHook <+> namedScratchpadManageHook myScratchPads,
                                 logHook               = dynamicLogWithPP $ xmobarPP
@@ -295,9 +301,7 @@ defaults xmproc0 xmproc1 = def
                                                                 ppSep               = " | ",
                                                                 ppLayout            = myLayoutPrinter
                                                             }
-                            }    
-
-
+                            }
 
 ------------------------------------------------------------------------
 -- Hilfetext
