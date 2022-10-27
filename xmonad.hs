@@ -100,27 +100,27 @@ myColorizer                         = colorRangeFromClassName
                                         (0x70, 0xFF, 0x70)          -- Schwarz      -- inactive fg
                                         (0x70, 0xFF, 0x70)          -- rot          -- active fg
 
-myScratchPads :: [NamedScratchpad]
-myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm,
-                  NS "thunderbird" spawnThunder findThunder manageThunder
-                ]
-  where
-    spawnTerm  = myTerminal ++ " -t scratchpad"
-    findTerm   = title =? "scratchpad"
-    manageTerm = customFloating $ W.RationalRect l t w h
-               where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
-    spawnThunder  = "thunderbird"
-    findThunder   = className =? "thunderbird"
-    manageThunder = customFloating $ W.RationalRect l t w h
-               where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
+-- myScratchPads :: [NamedScratchpad]
+-- myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm,
+--                   NS "thunderbird" spawnThunder findThunder manageThunder
+--                 ]
+--   where
+--     spawnTerm  = myTerminal ++ " -t scratchpad"
+--     findTerm   = title =? "scratchpad"
+--     manageTerm = customFloating $ W.RationalRect l t w h
+--                where
+--                  h = 0.9
+--                  w = 0.9
+--                  t = 0.95 -h
+--                  l = 0.95 -w
+--     spawnThunder  = "thunderbird"
+--     findThunder   = className =? "thunderbird"
+--     manageThunder = customFloating $ W.RationalRect l t w h
+--                where
+--                  h = 0.9
+--                  w = 0.9
+--                  t = 0.95 -h
+--                  l = 0.95 -w
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -160,11 +160,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         --((modm                    ,               xK_d      ),            spawn "emacs"),                                                  -- Doom Emacs
         --((modm                    ,               xK_b      ),            spawn "firefox"),                                                -- Firefox
         ((modm                    ,               xK_b      ),            spawn "brave-browser"),                                            -- Brave
-        ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png"),                                                   -- Firefox
+        ((modm                    ,               xK_s      ),            spawn "maim --quality 4 ~/Bilder/screenshot_$(date +'%Y-%m-%d--%H%M%S').png")                                                   -- Firefox
 
         -- Scratchpads
-        ((modm                    ,               xK_t      ),            namedScratchpadAction myScratchPads "terminal"),
-        ((modm                    ,               xK_z      ),            namedScratchpadAction myScratchPads "thunderbird")
+        --((modm                    ,               xK_t      ),            namedScratchpadAction myScratchPads "terminal"),
+        --((modm                    ,               xK_z      ),            namedScratchpadAction myScratchPads "thunderbird")
     ]
     ++
 
@@ -225,7 +225,7 @@ myManageHook = composeAll
         className =? "Code"                 --> viewShift "3:CODE",
         className =? "alacritty"            --> viewShift "1:TERM",
         className =? "Alacritty"            --> viewShift "1:TERM",
---        className =? "thunderbird"          --> doShift "4:MISC",
+        className =? "thunderbird"          --> doShift "4:MISC",
         className =? "Mail"                 --> doShift "4:MISC",
         className =? "gnome-calculator"     --> doFloat,
         className =? "Gimp-2.10"            --> viewShift "5:GFX",
@@ -276,7 +276,7 @@ defaults xmproc0 xmproc1 = def
 
                                 layoutHook            = myLayout,
                                 startupHook           = myStartupHook,
-                                manageHook            = myManageHook <+> namedScratchpadManageHook myScratchPads,
+                                manageHook            = myManageHook,-- <+> namedScratchpadManageHook myScratchPads,
                                 logHook               = dynamicLogWithPP $ xmobarPP
                                                             {
                                                                 ppOutput            = \x -> hPutStrLn xmproc0 x 
